@@ -79,10 +79,13 @@ Sécurité : JWT pour sécuriser les endpoints et gérer les rôles (client, adm
 *diagramme de use case
 
 <img width="535" alt="image" src="https://github.com/user-attachments/assets/05b36e5f-3777-4be7-a656-01d6d5d2407c" />
+
 *diagramme de class 
 
 <img width="384" alt="image" src="https://github.com/user-attachments/assets/52e207dd-6b82-4a91-95c0-af5cc34f9e4e" />
+
 diagramme de sequence
+
 <img width="434" alt="image" src="https://github.com/user-attachments/assets/3662dfce-26bd-4c2e-86f2-c9571c92be50" />
 
 
