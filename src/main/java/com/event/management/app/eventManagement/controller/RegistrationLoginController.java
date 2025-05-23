@@ -33,13 +33,14 @@ public class RegistrationLoginController {
         return ResponseEntity.ok(userRepository.save(user));
     }
 
-//    @PostMapping("/auth/login")
-//    public ResponseEntity<?> loginUser(@RequestBody User user) {
-//        try {
-//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-//            return ResponseEntity.ok("Login successful");
-//        } catch(Exception ex) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-//        }
+    @PostMapping("/auth/login")
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+            return ResponseEntity.ok("Login successful");
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
+    }
     }
 
