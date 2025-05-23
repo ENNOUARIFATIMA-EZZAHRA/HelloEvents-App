@@ -1,7 +1,8 @@
-package com.cwa.springboot_app.controller;
+package com.event.management.app.eventManagement.controller;
 
-import com.cwa.springboot_app.entity.User;
-import com.cwa.springboot_app.repository.UserRepository;
+import com.event.management.app.eventManagement.entity.User;
+
+import com.event.management.app.eventManagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class RegistrationLoginController {
 
@@ -23,7 +24,7 @@ public class RegistrationLoginController {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         if (userRepository.findByUsername(user.getUsername()) != null) {
             return ResponseEntity.badRequest().body("Username already exists");
@@ -32,13 +33,13 @@ public class RegistrationLoginController {
         return ResponseEntity.ok(userRepository.save(user));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody User user) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-            return ResponseEntity.ok("Login successful");
-        } catch(Exception ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-        }
+//    @PostMapping("/auth/login")
+//    public ResponseEntity<?> loginUser(@RequestBody User user) {
+//        try {
+//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+//            return ResponseEntity.ok("Login successful");
+//        } catch(Exception ex) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+//        }
     }
-}
+

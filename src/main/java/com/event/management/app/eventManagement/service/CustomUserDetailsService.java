@@ -1,7 +1,7 @@
-package com.cwa.springboot_app.service;
+package com.event.management.app.eventManagement.service;
 
-import com.cwa.springboot_app.entity.User;
-import com.cwa.springboot_app.repository.UserRepository;
+import com.event.management.app.eventManagement.entity.User;
+import com.event.management.app.eventManagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +24,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))
+        );
     }
 }

@@ -1,4 +1,4 @@
-package com.cwa.springboot_app.entity;
+package com.event.management.app.eventManagement.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
