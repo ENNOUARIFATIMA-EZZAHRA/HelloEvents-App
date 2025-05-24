@@ -89,6 +89,9 @@ diagramme de sequence
 
 <img width="434" alt="image" src="https://github.com/user-attachments/assets/3662dfce-26bd-4c2e-86f2-c9571c92be50" />
 
+collection de Authentification:
+https://.postman.co/workspace/My-Workspace~2be7e78b-294c-4e8d-8fab-bf07529f7a9c/collection/44577571-fd83e801-0416-41c3-aa67-48c7fea1be0d?action=share&creator=44577571
+
 
  
 
