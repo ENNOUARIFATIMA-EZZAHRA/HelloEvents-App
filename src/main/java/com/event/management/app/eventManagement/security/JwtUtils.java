@@ -7,27 +7,27 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-  private final String secret = "secretKey";
-  private final long expiration = 86400000;
+  private final String SECRET = "mySecretKey";
+  private final long EXPIRATION = 86400000; // 24h
 
   public String generateToken(String username) {
     return Jwts.builder()
       .setSubject(username)
       .setIssuedAt(new Date())
-      .setExpiration(new Date(System.currentTimeMillis() + expiration))
-      .signWith(SignatureAlgorithm.HS256, secret)
+      .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+      .signWith(SignatureAlgorithm.HS256, SECRET)
       .compact();
   }
 
-  public String getUsername(String token) {
-    return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+  public String getUsernameFromToken(String token) {
+    return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody().getSubject();
   }
 
   public boolean validateToken(String token) {
     try {
-      Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+      Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
       return true;
-    } catch (Exception e) {
+    } catch (JwtException e) {
       return false;
     }
   }
