@@ -28,7 +28,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf().disable()
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // ضروري لأننا كنستعمل JWT
       .and()
       .authorizeHttpRequests(auth -> auth
         .requestMatchers("/auth/**").permitAll()
