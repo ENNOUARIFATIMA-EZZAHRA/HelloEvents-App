@@ -30,9 +30,13 @@ public class SecurityConfig {
       .cors().and()
       .csrf().disable()
       .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/auth/**").permitAll()
-        .anyRequest().authenticated()
-      )
+        .requestMatchers("/auth/**", "/api/public/**").permitAll()
+        .requestMatchers("/api/events").permitAll() // ✅ استخدم requestMatchers بدل antMatchers
+        .requestMatchers("/api/profile/**").authenticated()
+        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+        .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
+        .anyRequest().authenticated())
+
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

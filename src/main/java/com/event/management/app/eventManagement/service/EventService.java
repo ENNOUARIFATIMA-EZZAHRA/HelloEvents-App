@@ -5,6 +5,7 @@ import com.event.management.app.eventManagement.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,9 @@ public class EventService {
   // إنشاء حدث جديد
   public Event createEvent(Event event) {
     return eventRepository.save(event);
+  }
+  public List<Event> searchEvents(String title, String category, String location, Date date) {
+    return eventRepository.searchEvents(title, category, location, date);
   }
 
   // تحديث حدث موجود

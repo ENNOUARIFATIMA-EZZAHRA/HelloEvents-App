@@ -3,10 +3,12 @@ package com.event.management.app.eventManagement.controller;
 import com.event.management.app.eventManagement.entity.Event;
 import com.event.management.app.eventManagement.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -18,7 +20,7 @@ public class EventController {
 
   // عرض كل الأحداث أو البحث عن طريق keyword أو category
   @GetMapping
-  public List<Event> getEvents(@RequestParam(required = false) String title,
+  public List<Event> getAll(@RequestParam(required = false) String title,
                                @RequestParam(required = false) String category) {
     if (title != null) {
       return eventService.searchByTitle(title);
@@ -28,10 +30,19 @@ public class EventController {
       return eventService.getAllEvents();
     }
   }
+  @GetMapping("/search")
+  public List<Event> searchEvents(
+    @RequestParam(required = false) String title,
+    @RequestParam(required = false) String category,
+    @RequestParam(required = false) String location,
+    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date
+  ) {
+    return eventService.searchEvents(title, category, location, (java.sql.Date) date);
+  }
 
   // جلب حدث واحد
   @GetMapping("/{id}")
-  public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+  public ResponseEntity<Event> getEvent(@PathVariable Long id) {
     Event event = eventService.getEventById(id)
       .orElseThrow(() -> new RuntimeException("Event not found with id: " + id));
     return ResponseEntity.ok(event);
@@ -48,7 +59,7 @@ public class EventController {
   // تعديل حدث (محمي فقط للمدير)
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('ADMIN')")
-  public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) {
+  public ResponseEntity<Event> update(@PathVariable Long id, @RequestBody Event event) {
     Event updatedEvent = eventService.updateEvent(id, event);
     return ResponseEntity.ok(updatedEvent);
   }
@@ -56,7 +67,7 @@ public class EventController {
   // حذف حدث (محمي فقط للمدير)
   @DeleteMapping("/{id}")
   @PreAuthorize("hasRole('ADMIN')")
-  public ResponseEntity<?> deleteEvent(@PathVariable Long id) {
+  public ResponseEntity<?> delete(@PathVariable Long id) {
     eventService.deleteEvent(id);
     return ResponseEntity.ok().build();
   }

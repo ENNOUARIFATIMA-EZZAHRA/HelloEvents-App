@@ -25,4 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
       Collections.singletonList(() -> "ROLE_" + user.getRole())
     );
   }
+
+
 }

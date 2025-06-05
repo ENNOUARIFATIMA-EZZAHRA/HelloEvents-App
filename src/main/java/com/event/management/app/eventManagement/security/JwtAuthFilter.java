@@ -29,7 +29,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     String path = request.getServletPath();
 
-
     if (path.startsWith("/auth")) {
       filterChain.doFilter(request, response);
       return;
@@ -40,22 +39,37 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     final String username;
 
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+      System.out.println("❌ Authorization header missing or invalid");
       filterChain.doFilter(request, response);
       return;
     }
 
     jwt = authHeader.substring(7);
-    username = jwtService.extractUsername(jwt);
 
-    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-      UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-      if (jwtService.validateToken(jwt, userDetails)) {
-        UsernamePasswordAuthenticationToken authToken =
-          new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    try {
+      username = jwtService.extractUsername(jwt);
+      System.out.println("✅ JWT Token reçu: " + jwt);
+      System.out.println("👤 Nom d'utilisateur extrait: " + username);
 
-        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+      if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        if (jwtService.validateToken(jwt, userDetails)) {
+          System.out.println("🔐 JWT valide pour l'utilisateur: " + username);
+          System.out.println("📛 Rôles: " + userDetails.getAuthorities());
+
+          UsernamePasswordAuthenticationToken authToken =
+            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+          authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+          SecurityContextHolder.getContext().setAuthentication(authToken);
+        } else {
+          System.out.println("⚠️ JWT invalide pour l'utilisateur: " + username);
+        }
       }
+
+    } catch (Exception e) {
+      System.out.println("💥 Erreur lors du parsing ou de la validation du JWT: " + e.getMessage());
     }
 
     filterChain.doFilter(request, response);
