@@ -18,7 +18,7 @@ public class EventController {
   @Autowired
   private EventService eventService;
 
-  // عرض كل الأحداث أو البحث عن طريق keyword أو category
+
   @GetMapping
   public List<Event> getAll(@RequestParam(required = false) String title,
                                @RequestParam(required = false) String category) {
@@ -40,7 +40,7 @@ public class EventController {
     return eventService.searchEvents(title, category, location, (java.sql.Date) date);
   }
 
-  // جلب حدث واحد
+
   @GetMapping("/{id}")
   public ResponseEntity<Event> getEvent(@PathVariable Long id) {
     Event event = eventService.getEventById(id)
@@ -48,7 +48,7 @@ public class EventController {
     return ResponseEntity.ok(event);
   }
 
-  // إنشاء حدث جديد (محمي فقط للمدير)
+
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Event> createEvent(@RequestBody Event event) {
@@ -56,7 +56,7 @@ public class EventController {
     return ResponseEntity.ok(createdEvent);
   }
 
-  // تعديل حدث (محمي فقط للمدير)
+
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Event> update(@PathVariable Long id, @RequestBody Event event) {
@@ -64,7 +64,7 @@ public class EventController {
     return ResponseEntity.ok(updatedEvent);
   }
 
-  // حذف حدث (محمي فقط للمدير)
+
   @DeleteMapping("/{id}")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<?> delete(@PathVariable Long id) {

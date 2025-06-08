@@ -19,7 +19,7 @@ public class ProfileController {
 
   private final UserRepository userRepository;
 
-  // GET: جلب بيانات البروفايل ديال المستخدم اللي دار login
+
   @GetMapping
   public ResponseEntity<UserProfileResponse> getProfile(Principal principal) {
     String username = principal.getName();
@@ -42,7 +42,7 @@ public class ProfileController {
     return ResponseEntity.ok(dto);
   }
 
-  // PUT: تحديث بيانات البروفايل (مثلاً: email, fullName)
+
   @PutMapping
   public ResponseEntity<?> updateProfile(@RequestBody User updatedUser) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -55,11 +55,9 @@ public class ProfileController {
 
     User user = userOpt.get();
 
-    // نحدّث فقط الحقول اللي مسموح لهم بالتغيير
+
     user.setEmail(updatedUser.getEmail());
     user.setFullName(updatedUser.getFullName());
-    // ما نغيروش username أو password هنا للحفاظ على الأمان
-
     userRepository.save(user);
 
     return ResponseEntity.ok("Profile updated successfully");

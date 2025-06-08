@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Date; // ✅ هذا هو السطر المهم
+import java.util.Date;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
@@ -14,7 +14,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
   List<Event> findByLocation(String location);
   List<Event> findByTitleContainingIgnoreCase(String keyword);
 
-  // البحث باستخدام أكثر من معيار
+
   @Query("SELECT e FROM Event e WHERE " +
     "(:title IS NULL OR LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
     "(:category IS NULL OR e.category = :category) AND " +

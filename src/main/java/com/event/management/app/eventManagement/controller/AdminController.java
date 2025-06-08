@@ -13,25 +13,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')") // يقدر يدخل فقط admin
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
   private final UserService userService;
 
-  // عرض جميع المستخدمين
+
   @GetMapping("/users")
   public ResponseEntity<List<User>> getAllUsers() {
     return ResponseEntity.ok(userService.getAllUsers());
   }
 
-  // حذف مستخدم حسب username
+
   @DeleteMapping("/user/{username}")
   public ResponseEntity<Void> deleteUser(@PathVariable String username) {
     userService.deleteUser(username);
     return ResponseEntity.noContent().build();
   }
 
-  // تغيير دور المستخدم
+
   @PutMapping("/user/{username}/role")
   public ResponseEntity<User> updateUserRole(@PathVariable String username, @RequestParam String newRole) {
     User updatedUser = userService.updateUserRoles(username, Collections.singletonList(newRole));

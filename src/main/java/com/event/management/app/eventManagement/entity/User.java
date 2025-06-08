@@ -20,8 +20,8 @@ public class User {
   private String username;
   private String password;
 
-  private String email;      // ✅ مضافة جديدة
-  private String fullName;   // ✅ مضافة جديدة
+  private String email;
+  private String fullName;
 
   @ElementCollection(fetch = FetchType.EAGER)
   @Enumerated(EnumType.STRING)

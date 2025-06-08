@@ -31,7 +31,7 @@ public class UserService {
 
     user.setRoles(newRoles.stream()
       .map(role -> Role.valueOf(role.toUpperCase()))
-      .collect(Collectors.toSet())); // ← التصحيح هنا
+      .collect(Collectors.toSet()));
 
     return userRepository.save(user);
   }

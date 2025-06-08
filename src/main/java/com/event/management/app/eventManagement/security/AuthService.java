@@ -32,15 +32,16 @@ public class AuthService {
     }
 
     User user = new User();
-    user.setEmail(request.getEmail());
-    user.setFullName(request.getFullName());
-    user.setUsername(request.getUsername());
-    user.setPassword(passwordEncoder.encode(request.getPassword()));
-    user.setRoles(Set.of(Role.USER, Role.ADMIN));
+    user.setUsername(registerRequest.getUsername());
+    user.setEmail(registerRequest.getEmail());
+    user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+    user.setFullName(registerRequest.getFullName());
+    user.setRole("USER");
+    userRepository.save(user);
 
-    // ✅ Enum
 
-    userRepository.save(user); // ✅ إصلاح
+
+    userRepository.save(user);
 
     UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
     return jwtService.generateToken(userDetails);

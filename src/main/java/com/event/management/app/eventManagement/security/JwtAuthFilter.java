@@ -30,7 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     String path = request.getServletPath();
 
-    // تخطي التحقق على مسارات auth (login, register...)
+
     if (path.startsWith("/auth")) {
       filterChain.doFilter(request, response);
       return;
@@ -46,7 +46,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       return;
     }
 
-    jwt = authHeader.substring(7); // إزالة "Bearer " من التوكن
+    jwt = authHeader.substring(7);
 
     try {
       username = jwtService.extractUsername(jwt);

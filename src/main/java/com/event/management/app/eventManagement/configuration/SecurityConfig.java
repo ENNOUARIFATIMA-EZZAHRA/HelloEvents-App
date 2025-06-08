@@ -38,7 +38,7 @@ public class SecurityConfig {
       .authorizeHttpRequests(auth -> auth
         .requestMatchers("/auth/**").permitAll()
         .requestMatchers("/api/events").permitAll()
-        .requestMatchers("/error").permitAll() // ✅ هذا السطر ضروري
+        .requestMatchers("/error").permitAll()
         .requestMatchers("/api/admin/**").hasRole("ADMIN")
         .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
         .requestMatchers("/api/profile/**").authenticated()

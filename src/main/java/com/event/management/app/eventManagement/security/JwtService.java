@@ -67,7 +67,7 @@ public class JwtService {
     return createToken(claims, userDetails.getUsername());
   }
 
-  // Création du token JWT signé
+
   private String createToken(Map<String, Object> claims, String subject) {
     return Jwts.builder()
       .setClaims(claims)
