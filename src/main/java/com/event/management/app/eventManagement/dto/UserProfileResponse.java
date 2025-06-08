@@ -1,6 +1,10 @@
 
 package com.event.management.app.eventManagement.dto;
 
+import com.event.management.app.eventManagement.entity.Role;
+
+import java.util.Set;
+
 public class UserProfileResponse{
   private Long id;
   private String username;
@@ -8,10 +12,10 @@ public class UserProfileResponse{
   private String email;
   private String fullName;
 
-  public UserProfileResponse(Long id, String username, String role, String email, String fullName) {
+  public UserProfileResponse(Long id, String username, Set<Role> role, String email, String fullName) {
     this.id = id;
     this.username = username;
-    this.role = role;
+    this.role = String.valueOf(role);
     this.email = email;
     this.fullName = fullName;
   }

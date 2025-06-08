@@ -34,7 +34,7 @@ public class ProfileController {
     UserProfileResponse dto = new UserProfileResponse(
       user.getId(),
       user.getUsername(),
-      user.getRole(),
+      user.getRoles(),
       user.getEmail(),
       user.getFullName()
     );

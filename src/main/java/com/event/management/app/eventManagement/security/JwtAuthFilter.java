@@ -3,10 +3,10 @@ package com.event.management.app.eventManagement.security;
 import com.event.management.app.eventManagement.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -29,6 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     String path = request.getServletPath();
 
+    // تخطي التحقق على مسارات auth (login, register...)
     if (path.startsWith("/auth")) {
       filterChain.doFilter(request, response);
       return;
@@ -44,7 +46,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       return;
     }
 
-    jwt = authHeader.substring(7);
+    jwt = authHeader.substring(7); // إزالة "Bearer " من التوكن
 
     try {
       username = jwtService.extractUsername(jwt);
@@ -55,11 +57,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         if (jwtService.validateToken(jwt, userDetails)) {
-          System.out.println("🔐 JWT valide pour l'utilisateur: " + username);
-          System.out.println("📛 Rôles: " + userDetails.getAuthorities());
+          List<String> roles = jwtService.extractRoles(jwt);
+          List<SimpleGrantedAuthority> authorities = roles.stream()
+            .map(SimpleGrantedAuthority::new)
+            .toList();
 
           UsernamePasswordAuthenticationToken authToken =
-            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
           authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
           SecurityContextHolder.getContext().setAuthentication(authToken);
@@ -67,7 +71,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
           System.out.println("⚠️ JWT invalide pour l'utilisateur: " + username);
         }
       }
-
     } catch (Exception e) {
       System.out.println("💥 Erreur lors du parsing ou de la validation du JWT: " + e.getMessage());
     }

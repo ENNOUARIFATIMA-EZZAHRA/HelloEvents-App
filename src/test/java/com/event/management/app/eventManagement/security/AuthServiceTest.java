@@ -19,7 +19,8 @@ public class AuthServiceTest {
       "newuser",
       "password123",
       "newuser@example.com",
-      "New User"
+      "New User",
+      "new_role"
     );
 
     String token = authService.register(request);
